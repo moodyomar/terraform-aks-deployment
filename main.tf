@@ -11,20 +11,20 @@ provider "azurerm" {
 }
 
 resource "azurerm_resource_group" "rg" {
-  name     = "k8sclusterResourceGroup"
-  location = "northeurope"
+  name     = var.rg_name
+  location = var.rg_location
 }
 
 resource "azurerm_kubernetes_cluster" "cluster" {
-  name       = "k8scluster"
-  location   = azurerm_resource_group.rg.location
-  resource_group_name = azurerm_resource_group.rg.name
-  dns_prefix = "k8scluster"
+  name       = var.cluster_name
+  location   = var.rg_location
+  resource_group_name = var.rg_name
+  dns_prefix = var.cluster_name
 
   default_node_pool {
     name       = "default"
-    node_count = "2"
-    vm_size    = "standard_d2_v2"
+    node_count = var.nodes
+    vm_size    = var.vmSize
   }
   identity {
     type = "SystemAssigned"
